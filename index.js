@@ -23,6 +23,7 @@ anychart.onDocumentReady(function () {
   ];
     // create tag cloud
     var chart = anychart.tagCloud(text);
+ 
     // set data with settings
     chart.data(text, {
       mode: 'by-word',
@@ -37,7 +38,6 @@ anychart.onDocumentReady(function () {
       // set array of angles, by which words will be placed
       .angles([0])
       // enabled color range
-      // .colorRange(true)
       // set color scale
       .colorScale(anychart.scales.ordinalColor())
       // set settings for normal state
@@ -55,7 +55,7 @@ anychart.onDocumentReady(function () {
       });
 
     // set container id for the chart
-    chart.container('container');
+    chart.container('vis');
     // initiate chart drawing
     chart.draw();
   });
