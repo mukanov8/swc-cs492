@@ -1,17 +1,25 @@
-
-
+import anychart from 'anychart'
 anychart.onDocumentReady(function () {
-  $.ajax(
-    'https://cdn.anychart.com/samples/tag-cloud/alice-in-wonderland/text.txt'
-  ).done(function (text) {
+  var text = [
+    {x: "learning", value: 80, category: "noun"},
+    {x: "includes", value: 56, category: "verb"},
+    {x: "lists", value: 44, category: "noun"},
+    {x: "meaning", value: 40, category: "noun"},
+    {x: "useful", value: 36, category: "adjective"},
+    {x: "different", value: 32, category: "adjective"},
+    {x: "grammar", value: 28, category: "noun"},
+    {x: "teaching", value: 24, category: "noun"},
+    {x: "example", value: 20, category: "noun"},
+    {x: "thing", value: 12, category: "noun"}
+];
     // create tag cloud
-    var chart = anychart.tagCloud();
+    var chart = anychart.tagCloud(text);
     // set data with settings
-    chart.data(text, {
-      mode: 'by-word',
-      minLength: 4,
-      maxItems: 200
-    });
+    // chart.data(text, {
+    //   mode: 'by-word',
+    //   minLength: 4,
+    //   maxItems: 200
+    // });
     // set chart title
     chart
       .title(
@@ -42,4 +50,3 @@ anychart.onDocumentReady(function () {
     // initiate chart drawing
     chart.draw();
   });
-});
