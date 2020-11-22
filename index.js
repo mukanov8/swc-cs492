@@ -21,21 +21,31 @@ anychart.onDocumentReady(function () {
     {x: "quite", value: 20},
     {x: "well", value: 12}
   ];
+
+    var stage = acgraph.create('container');
     // create tag cloud
-    var chart = anychart.tagCloud(text);
-    // set data with settings
-    chart.data(text, {
+    var title = anychart.standalones.title();
+  title.padding(10).text('CS492 - Semantic Word Clouds');
+    var charts = [];
+    for (var i = 0; i < 2; i ++){
+      charts.push(anychart.tagCloud(text));
+    }
+
+    for (var j = 0; j < charts.length; j ++){
+      // set data with settings
+    charts[j].data(text, {
       mode: 'by-word',
       minLength: 4,
-      maxItems: 200
+      maxItems: 100
     });
     // set chart title
-    chart
-      .title(
-        'CS492 - Semantic Word Clouds'
-      )
+    charts[j]
+      // .title(
+      //   'CS492 - Semantic Word Clouds'
+      // )
       // set array of angles, by which words will be placed
       .angles([0])
+      .bounds(0, "5%", "95%", "50%")
       // enabled color range
       // .colorRange(true)
       // set color scale
@@ -55,7 +65,13 @@ anychart.onDocumentReady(function () {
       });
 
     // set container id for the chart
-    chart.container('container');
+    charts[j].container(stage);
     // initiate chart drawing
-    chart.draw();
+    charts[j].draw();
+
+    }
+
+    title.container(stage);
+    title.draw();
+    
   });
