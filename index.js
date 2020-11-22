@@ -1,25 +1,34 @@
-import anychart from 'anychart'
 anychart.onDocumentReady(function () {
   var text = [
-    {x: "learning", value: 80, category: "noun"},
-    {x: "includes", value: 56, category: "verb"},
-    {x: "lists", value: 44, category: "noun"},
-    {x: "meaning", value: 40, category: "noun"},
-    {x: "useful", value: 36, category: "adjective"},
-    {x: "different", value: 32, category: "adjective"},
-    {x: "grammar", value: 28, category: "noun"},
-    {x: "teaching", value: 24, category: "noun"},
-    {x: "example", value: 20, category: "noun"},
-    {x: "thing", value: 12, category: "noun"}
-];
+    {x: "learning", value: 80},
+    {x: "includes", value: 56},
+    {x: "lists", value: 44},
+    {x: "meaning", value: 40},
+    {x: "useful", value: 36},
+    {x: "different", value: 32},
+    {x: "grammar", value: 28},
+    {x: "teaching", value: 24},
+    {x: "example", value: 20},
+    {x: "thing", value: 12},
+    {x: "hey", value: 80},
+    {x: "there", value: 56},
+    {x: "how", value: 44},
+    {x: "are", value: 40},
+    {x: "you", value: 36},
+    {x: "doing", value: 32},
+    {x: "Iam", value: 28},
+    {x: "doing", value: 24},
+    {x: "quite", value: 20},
+    {x: "well", value: 12}
+  ];
     // create tag cloud
     var chart = anychart.tagCloud(text);
     // set data with settings
-    // chart.data(text, {
-    //   mode: 'by-word',
-    //   minLength: 4,
-    //   maxItems: 200
-    // });
+    chart.data(text, {
+      mode: 'by-word',
+      minLength: 4,
+      maxItems: 200
+    });
     // set chart title
     chart
       .title(
@@ -28,7 +37,7 @@ anychart.onDocumentReady(function () {
       // set array of angles, by which words will be placed
       .angles([0])
       // enabled color range
-      .colorRange(true)
+      // .colorRange(true)
       // set color scale
       .colorScale(anychart.scales.ordinalColor())
       // set settings for normal state
