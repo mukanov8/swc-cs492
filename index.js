@@ -25,7 +25,7 @@ anychart.onDocumentReady(function () {
     // create tag cloud
     //   var title = anychart.standalones.title();
     // title.padding(10).text('CS492 - Semantic Word Clouds');
-
+    var stage = acgraph.create('vis');
     var charts = [];
     for (var i = 0; i < 2; i ++){
       charts.push(anychart.tagCloud(text));
@@ -45,7 +45,7 @@ anychart.onDocumentReady(function () {
       // )
       // set array of angles, by which words will be placed
       .angles([0])
-      .bounds(0, "5%", "95%", "50%")
+      .bounds(j*'33' +'%', "5%", "33%", "50%")
       // enabled color range
       // set color scale
       .colorScale(anychart.scales.ordinalColor())
@@ -64,13 +64,10 @@ anychart.onDocumentReady(function () {
       });
 
     // set container id for the chart
-    charts[j].container('vis');
+    charts[j].container(stage);
     // initiate chart drawing
     charts[j].draw();
 
     }
-
-    title.container(stage);
-    title.draw();
     
   });
