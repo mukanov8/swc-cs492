@@ -69,5 +69,34 @@ anychart.onDocumentReady(function () {
     charts[j].draw();
 
     }
+
+    $('text').className = "draggable";
+    $('.draggable').css('cursor', 'move');
+
+
+    
+
+    $('svg').attr('onload', "makeDraggable(evt)");
     
   });
+
+  function makeDraggable(evt) {
+    var svg = evt.target;
+    var selectedElement = false;
+    svg.addEventListener('mousedown', startDrag);
+    svg.addEventListener('mousemove', drag);
+    svg.addEventListener('mouseup', endDrag);
+    svg.addEventListener('mouseleave', endDrag);
+    function startDrag(evt) {
+      if (evt.target.classList.contains('draggable')) {
+        selectedElement = evt.target;
+        console.log(selectedElement.x);
+      }
+    }
+    function drag(evt) {
+    }
+    function endDrag(evt) {
+    }
+  }
+
+
