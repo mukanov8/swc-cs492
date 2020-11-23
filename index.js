@@ -145,74 +145,7 @@ anychart.onDocumentReady(function () {
     charts[j].draw();
 
     }
-
-    function makeDraggable(evt) {
-    var svg = evt.target;
-    var selectedElement = false;
-    var selectedElementText = false;
-    svg.addEventListener('mousedown', startDrag);
-    svg.addEventListener('mousemove', drag);
-    svg.addEventListener('mouseup', endDrag);
-    svg.addEventListener('mouseleave', endDrag);
-    function getMousePosition(evt) {
-      var CTM = svg.getScreenCTM();
-      return {
-        x: (evt.clientX - CTM.e) / CTM.a,
-        y: (evt.clientY - CTM.f) / CTM.d
-      };
-    }
-    function startDrag(evt) {
-      selectedElement = evt.target;
-      var text_nodes = $(selectedElement).parent().next().children();
-      for (var i = 0; i < text_nodes.length; i++){
-        if (text_nodes[i].textContent === selectedElement.textContent){
-          selectedElementText = text_nodes[i];
-        }
-      }
-
-      var transforms = selectedElement.transform.baseVal;
-      var transforms_text = selectedElementText.transform.baseVal;
-      console.log(transforms, transforms_text, selectedElementText);
-      offset = getMousePosition(evt);
-      // Ensure the first transform is a translate transform
-      if ((transforms.length === 0 ||
-        transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) || (transforms_text.length === 0 ||
-        transforms_text.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE)) {
-      // Create an transform that translates by (0, 0)
-        var translate = svg.createSVGTransform();
-        var translate_text = svg.createSVGTransform();
-        translate.setTranslate(0, 0);
-        translate_text.setTranslate(0, 0);
-      // Add the translation to the front of the transforms list
-        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
-        selectedElementText.transform.baseVal.insertItemBefore(translate_text, 0);
-      }
-      // Get initial translation amount
-      transform = transforms.getItem(0);
-      transform_text = transforms_text.getItem(0);
-      offset.x -= transform.matrix.e;
-      offset.y -= transform.matrix.f;
-      offset.x -= transform_text.matrix.e;
-      offset.y -= transform_text.matrix.f;
-
-    }
-    function drag(evt) {
-      if (selectedElement && selectedElementText) {
-        evt.preventDefault();
-        var coord = getMousePosition(evt);
-        transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
-        transform_text.setTranslate(coord.x - offset.x, coord.y - offset.y);
-      }
-    }
-    function endDrag(evt) {
-      selectedElement = null;
-      selectedElementText = null;
-    }
-  }
-   
-
-    
-    
+     
 
     $('svg').attr('onload', "makeDraggable(evt)");
     
