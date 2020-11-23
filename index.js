@@ -1,3 +1,6 @@
+
+
+
 anychart.onDocumentReady(function () {
   var text = [
     {x: "learning", value: 80},
@@ -70,10 +73,15 @@ anychart.onDocumentReady(function () {
 
     }
 
-    $('text').className = "draggable";
-    $('.draggable').css('cursor', 'move');
+  
+   
+    // $('.draggable').css('cursor', 'move');
+    // $('.draggable').click(function(event){
+    //     console.log(event.target);
+    //     console.log(event.target);
+    // });
 
-
+    
     
 
     $('svg').attr('onload', "makeDraggable(evt)");
@@ -83,20 +91,42 @@ anychart.onDocumentReady(function () {
   function makeDraggable(evt) {
     var svg = evt.target;
     var selectedElement = false;
+    var selectedElementText = false;
     svg.addEventListener('mousedown', startDrag);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
     svg.addEventListener('mouseleave', endDrag);
+    function getMousePosition(evt) {
+      var CTM = svg.getScreenCTM();
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      };
+    }
     function startDrag(evt) {
-      if (evt.target.classList.contains('draggable')) {
-        selectedElement = evt.target;
-        console.log(selectedElement.x);
+      selectedElement = evt.target;
+      var text_nodes = $(selectedElement).parent().next().children();
+      for (var i = 0; i < text_nodes.length; i++){
+        if (text_nodes[i].textContent === selectedElement.textContent){
+          selectedElementText = text_nodes[i];
+        }
       }
+      var transforms = selectedElement.transform.baseVal;
+      var transforms_text = selectedElementText.transform.baseVal;
+      console.log(transforms, transforms_text, selectedElementText);
+
     }
     function drag(evt) {
+      // if (selectedElement && selectedElementText) {
+      //   evt.preventDefault();
+      //  var x = parseFloat(selectedElement.getAttributeNS(null, "x"));
+      //   selectedElement.setAttributeNS(null, "x", x + 0.1);
+      // }
     }
     function endDrag(evt) {
+      selectedElement = null;
+      selectedElementText = null;
     }
   }
 
-
+  
