@@ -7,7 +7,7 @@ from nltk.corpus import reuters, stopwords
 
 from gensim.models import KeyedVectors
 
-NUM_OF_KEYWORDS = 25
+NUM_OF_KEYWORDS = 100
 NUM_OF_CLUSTERS = 6
 
 def preprocess_text(text_string):
