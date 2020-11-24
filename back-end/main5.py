@@ -68,21 +68,29 @@ def get_keywords_clusters(keywords):
             unknown.append(keyword)
             keywords.pop(i)
 
+    # Very naive clustering algorithm
+    # 1) Randomly select a word to initialize each cluster
+    # 2) One by one, insert each remaining word in the cluster which has the highest average similarity
+    #       between the word and all words currently in the cluster
     seeds = random.sample(keywords,NUM_OF_CLUSTERS)
     clusters = [[seed] for seed in seeds]
     for keyword in keywords:
         if keyword not in seeds:
-            similarity_to_seeds = [word_vecs.similarity(keyword,seed) for seed in seeds]
-            index_max = max(range(len(similarity_to_seeds)), key=similarity_to_seeds.__getitem__)
+            similarity_to_clusters = [0]*NUM_OF_CLUSTERS
+            for i,cluster in enumerate(clusters):
+                sum = 0
+                for word in cluster:
+                    sum+=word_vecs.similarity(keyword,word)
+                similarity_to_clusters[i] = sum / len(cluster)
+            index_max = max(range(len(similarity_to_clusters)), key=similarity_to_clusters.__getitem__)
             clusters[index_max].append(keyword)
     return clusters
 
-def produce_json(tokens,tfidfs,clusters):
-    fd = FreqDist(tokens)
+def produce_json(tfidfs,clusters):
     d = dict()
     for cluster_num,cluster in enumerate(clusters):        
         d[cluster_num] = []
-        for keyword_num,keyword in enumerate(cluster):
+        for keyword in cluster:
             entry = {"x": keyword, "value": int(tfidfs[keyword]*1000)}
             d[cluster_num].append(entry)
     return json.dumps(d)
@@ -98,15 +106,14 @@ def get_json_clusters(text_string):
     clusters = get_keywords_clusters(keywords)
     #[print(cluster) for cluster in clusters]
     
-    json_string = produce_json(tokens,tfidfs,clusters)
+    json_string = produce_json(tfidfs,clusters)
     
     return json_string
     
-
 # def main():
-#     # with open('sample_text.txt','r') as f:
-#         # text_string = f.read()
-#     # print(get_json_clusters(text_string))
+#     with open('sample_text.txt','r') as f:
+#         text_string = f.read()
+#     print(get_json_clusters(text_string))
 
 # if __name__=="__main__":
 #     main()
