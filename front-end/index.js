@@ -62,25 +62,22 @@ function makeDraggable(evt) {
     selectedElementText = null;
   }
 }
-$( document ).ready(function() {
+// $( document ).ready(function() {
   
     var webSocket = new WebSocket("ws://localhost:9998");
     let processedText = {};
     // var messageTextArea = document.getElementById("text").innerHTML;
 
     webSocket.onopen = function(message){
-      console.log("Server Connect =>"+ +message.data+"\n")
+      console.log("Server Connect"+"\n")
     };
     webSocket.onclose = function(message){
-      console.log("Server Disconnect =>"+ +message.data+"\n")
+      console.log("Server Disconnect"+"\n")
     };
     webSocket.onerror = function(message){
-      console.log("Error =>"+ +message.data+"\n")
+      console.log("Error"+ "\n");
     };
-    webSocket.onmessage = function(message){
-      console.log("Recieve From Server =>"+ +message.data+"\n")
-      // processedText = JSON.parse(message.data);
-    };
+   
     function sendMessage(){
       var message = document.getElementById("text").innerHTML;
       console.log("Send to Server => "+message+"\n")
@@ -91,6 +88,12 @@ $( document ).ready(function() {
       webSocket.close();
     }
 
+    webSocket.onmessage = function(message){
+      processedText = JSON.parse(message.data.slice(9));
+      console.log(processedText);
+      console.log("Recieved From Server"+"\n");
+      // processedText = JSON.parse(message.data);
+    };
   anychart.onDocumentReady(function () {
 
     
@@ -102,31 +105,40 @@ $( document ).ready(function() {
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
     // document.getElementById("color-selector").addEventListener("click", ()=> {sendUserText()} );
     
-    let text = 
-      [
-      {x: "learning", value: 80},
-      {x: "includes", value: 56},
-      {x: "lists", value: 44},
-      {x: "meaning", value: 40},
-      {x: "useful", value: 36},
-      {x: "different", value: 32},
-      {x: "grammar", value: 28},
-      {x: "teaching", value: 24},
-      {x: "example", value: 20},
-      {x: "thing", value: 12},
-      {x: "hey", value: 80},
-      {x: "there", value: 56},
-      {x: "how", value: 44},
-      {x: "are", value: 40},
-      {x: "you", value: 36},
-      {x: "doing", value: 32},
-      {x: "Iam", value: 28},
-      {x: "doing", value: 24},
-      {x: "quite", value: 20},
-      {x: "well", value: 12}
-      ]
-
-    //0-6: cluster number
+    // let text = 
+    //   [
+    //   {x: "learning", value: 80},
+    //   {x: "includes", value: 56},
+    //   {x: "lists", value: 44},
+    //   {x: "meaning", value: 40},
+    //   {x: "useful", value: 36},
+    //   {x: "different", value: 32},
+    //   {x: "grammar", value: 28},
+    //   {x: "teaching", value: 24},
+    //   {x: "example", value: 20},
+    //   {x: "thing", value: 12},
+    //   {x: "hey", value: 80},
+    //   {x: "there", value: 56},
+    //   {x: "how", value: 44},
+    //   {x: "are", value: 40},
+    //   {x: "you", value: 36},
+    //   {x: "doing", value: 32},
+    //   {x: "Iam", value: 28},
+    //   {x: "doing", value: 24},
+    //   {x: "quite", value: 20},
+    //   {x: "well", value: 12}
+    //   ]
+    let text2 = {"0": [{"x": "pop", "value": 75}], 
+                "1": [{x: "pictures", value: 150}, {x: "peeped",value: 75}, {x: "daisies", value: 75}, {x: "flashed", value: 75}], 
+                "2": [{"x": "watch", "value": 103}, {"x": "sitting", "value": 59}, {"x": "hear", "value": 58}], 
+                "3": [{"x": "actually", "value": 45}, {"x": "suddenly", "value": 179}, {"x": "conversations", "value": 133}, {"x": "mind", "value": 100}, {"x": "never", "value": 86}, {"x": "moment", "value": 85}, {"x": "nothing", "value": 82}, {"x": "thought", "value": 81}, {"x": "stupid", "value": 75}, {"x": "pleasure", "value": 75}, {"x": "curiosity", "value": 75}, {"x": "considering", "value": 71}, {"x": "fortunately", "value": 69}, {"x": "wondered", "value": 66}, {"x": "reading", "value": 60}, {"x": "remarkable", "value": 59}, {"x": "shall", "value": 54}, {"x": "ought", "value": 53}, {"x": "looked", "value": 49}, {"x": "seemed", "value": 46}, {"x": "quite", "value": 44}, {"x": "feel", "value": 43}, {"x": "getting", "value": 42}, {"x": "found", "value": 39}, {"x": "feet", "value": 38}, {"x": "either", "value": 37}, {"x": "seen", "value": 35}, {"x": "worth", "value": 32}, {"x": "whether", "value": 29}, {"x": "could", "value": 19}, {"x": "would", "value": 13}], 
+                "4": [{"x": "like", "value": 34}, {"x": "alice", "value": 452}, {"x": "rabbit", "value": 301}, {"x": "dear", "value": 150}, {"x": "sister", "value": 115}, {"x": "across", "value": 88}, {"x": "book", "value": 87}, {"x": "tired", "value": 75}, {"x": "sleepy", "value": 75}, {"x": "pink", "value": 75}, {"x": "oh", "value": 75}, {"x": "eyes", "value": 69}, {"x": "get", "value": 65}, {"x": "think", "value": 64}, {"x": "way", "value": 60}, {"x": "burning", "value": 59}, {"x": "hot", "value": 54}, {"x": "hedge", "value": 52}, {"x": "well", "value": 51}, {"x": "deep", "value": 49}, {"x": "white", "value": 43}, {"x": "natural", "value": 34}, {"x": "see", "value": 30}, {"x": "use", "value": 30}, {"x": "large", "value": 29}, {"x": "say", "value": 28}, {"x": "making", "value": 28}, {"x": "close", "value": 28}, {"x": "another", "value": 27}, {"x": "much", "value": 27}, {"x": "world", "value": 24}, {"x": "take", "value": 23}, {"x": "made", "value": 20}], 
+                "5": [{"x": "started", "value": 35}, {"x": "ran", "value": 96}, {"x": "went", "value": 77}, {"x": "hurried", "value": 75}, {"x": "tunnel", "value": 69}, {"x": "stopping", "value": 64}, {"x": "afterwards", "value": 60}, {"x": "straight", "value": 56}, {"x": "picking", "value": 54}, {"x": "dipped", "value": 54}, {"x": "trouble", "value": 49}, {"x": "occurred", "value": 46}, {"x": "time", "value": 45}, {"x": "twice", "value": 45}, {"x": "field", "value": 38}, {"x": "took", "value": 36}, {"x": "falling", "value": 35}, {"x": "beginning", "value": 34}, {"x": "late", "value": 29}, {"x": "day", "value": 25}, {"x": "bank", "value": 21}]}
+    console.log(text2[1]);
+    if(processedText.length>0){
+      text2 = processedText;
+    }
+                //0-6: cluster number
     // output = {0: [{x: "learning", value: 80},{x: "includes", value: 56},{x: "lists", value: 44}, etc], 1:[{},{},{},etc] }
 
       // create tag cloud
@@ -135,17 +147,17 @@ $( document ).ready(function() {
       var stage = acgraph.create('vis');
       var charts = [];
       for (var i = 0; i < 6; i ++){
-        charts.push(anychart.tagCloud(text));
+        charts.push(anychart.tagCloud(text2));
       }
 
       for (var j = 0; j < charts.length; j ++){
 
-        let boundVals = j<3 ? [j*'33' +'%', "0%", "33%", "50%"] : [(j-3)*'33' +'%', "50%", "33%", "50%"]
+      let boundVals = j<3 ? [j*'33' +'%', "0%", "33%", "50%"] : [(j-3)*'33' +'%', "50%", "33%", "50%"]
         // set data with settings
-      charts[j].data(text, {
+      charts[j].data(text2[j], {
         mode: 'by-word',
-        minLength: 4,
-        maxItems: 100
+        // minLength: 4,
+        // maxItems: 100s
       });
       // set chart title
       charts[j]
@@ -185,6 +197,6 @@ $( document ).ready(function() {
     });
 
 
-});
+// });
 
   

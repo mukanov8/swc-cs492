@@ -13,7 +13,7 @@ async def accept(websocket, path):
         print("stop")
         print(result)
         # 클라인언트로 echo를 붙여서 재 전송한다.
-        await websocket.send("received: " + data)
+        await websocket.send("received: " + result)
 # 웹 소켓 서버 생성.호스트는 localhost에 port는 9998로 생성한다.
 start_server = websockets.serve(accept, "localhost", 9998)
 # 비동기로 서버를 대기한다.
