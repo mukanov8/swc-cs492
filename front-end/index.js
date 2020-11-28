@@ -48,13 +48,12 @@
       offset.y -= transform_text.matrix.f;
 
       //Change wordcloud order in DOM
-      $('svg').children()[0].children()[0];
-      // var children = 
-      // // console.log(children.map((child) => {return child.id;}))
-      // if ($(selectedElement).parent().parent().parent() !== children[-1]){
-      //   $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
-      // }
-      // console.log(children.map((child) => {return child.id;}));
+      var children = $('svg').children().children();
+      // console.log(children.map((child) => {return child.id;}))
+      if ($(selectedElement).parent().parent().parent() !== children[children.length-2]){
+        $(selectedElement).parent().parent().parent().insertAfter(children[children.length-2]);
+      }
+      console.log(children.map((child) => {return child.id;}));
 
 
     }
@@ -67,6 +66,8 @@
       }
     }
     function endDrag(evt) {
+      selectedElement.parent().removeChild(selectedElement);
+      selectedElementText.parent().removeChild(selectedElementText);
       selectedElement = null;
       selectedElementText = null;
     }
