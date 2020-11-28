@@ -64,7 +64,12 @@ function makeDraggable(evt) {
 }
 // $( document ).ready(function() {
   
-    var webSocket = new WebSocket("ws://localhost:9998");
+    // var webSocket = new WebSocket("ws://localhost:9998");
+    const webSocket = new WebSocket("ws://175.215.17.245:9998");
+    // const WebSocket = require('ws');
+    WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
+    // const webSocket = new WebSocket('wss://172.30.1.48:9998');
+    
     let processedText = {};
     // var messageTextArea = document.getElementById("text").innerHTML;
 
@@ -79,7 +84,7 @@ function makeDraggable(evt) {
     };
    
     function sendMessage(){
-      var message = document.getElementById("text").innerHTML;
+      let message = document.getElementById("text").innerHTML;
       console.log("Send to Server => "+message+"\n")
       webSocket.send(message);
       // message.value = "";
@@ -92,17 +97,27 @@ function makeDraggable(evt) {
       processedText = JSON.parse(message.data.slice(9));
       console.log(processedText);
       console.log("Recieved From Server"+"\n");
+      // document.getElementById("vis").innerHTML = "";
+      // let div = document.getElementById('vis');
+      // while(div.firstChild){
+      //   div.removeChild(div.firstChild);
+      // }
+      $( "#vis" ).empty();
+      generateCloud(processedText);
       // processedText = JSON.parse(message.data);
     };
-  anychart.onDocumentReady(function () {
-
-    
-    
     const sendUserText = ()=>{
       //TO-DO send message(user's input) via WebSocket to the server
       console.log(document.getElementById("text").innerHTML)
     }
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
+
+    const generateCloud = (cloudText) => {
+
+  
+
+    anychart.onDocumentReady(function () {
+   
     // document.getElementById("color-selector").addEventListener("click", ()=> {sendUserText()} );
     
     // let text = 
@@ -128,16 +143,18 @@ function makeDraggable(evt) {
     //   {x: "quite", value: 20},
     //   {x: "well", value: 12}
     //   ]
-    let text2 = {"0": [{"x": "pop", "value": 75}], 
-                "1": [{x: "pictures", value: 150}, {x: "peeped",value: 75}, {x: "daisies", value: 75}, {x: "flashed", value: 75}], 
-                "2": [{"x": "watch", "value": 103}, {"x": "sitting", "value": 59}, {"x": "hear", "value": 58}], 
-                "3": [{"x": "actually", "value": 45}, {"x": "suddenly", "value": 179}, {"x": "conversations", "value": 133}, {"x": "mind", "value": 100}, {"x": "never", "value": 86}, {"x": "moment", "value": 85}, {"x": "nothing", "value": 82}, {"x": "thought", "value": 81}, {"x": "stupid", "value": 75}, {"x": "pleasure", "value": 75}, {"x": "curiosity", "value": 75}, {"x": "considering", "value": 71}, {"x": "fortunately", "value": 69}, {"x": "wondered", "value": 66}, {"x": "reading", "value": 60}, {"x": "remarkable", "value": 59}, {"x": "shall", "value": 54}, {"x": "ought", "value": 53}, {"x": "looked", "value": 49}, {"x": "seemed", "value": 46}, {"x": "quite", "value": 44}, {"x": "feel", "value": 43}, {"x": "getting", "value": 42}, {"x": "found", "value": 39}, {"x": "feet", "value": 38}, {"x": "either", "value": 37}, {"x": "seen", "value": 35}, {"x": "worth", "value": 32}, {"x": "whether", "value": 29}, {"x": "could", "value": 19}, {"x": "would", "value": 13}], 
-                "4": [{"x": "like", "value": 34}, {"x": "alice", "value": 452}, {"x": "rabbit", "value": 301}, {"x": "dear", "value": 150}, {"x": "sister", "value": 115}, {"x": "across", "value": 88}, {"x": "book", "value": 87}, {"x": "tired", "value": 75}, {"x": "sleepy", "value": 75}, {"x": "pink", "value": 75}, {"x": "oh", "value": 75}, {"x": "eyes", "value": 69}, {"x": "get", "value": 65}, {"x": "think", "value": 64}, {"x": "way", "value": 60}, {"x": "burning", "value": 59}, {"x": "hot", "value": 54}, {"x": "hedge", "value": 52}, {"x": "well", "value": 51}, {"x": "deep", "value": 49}, {"x": "white", "value": 43}, {"x": "natural", "value": 34}, {"x": "see", "value": 30}, {"x": "use", "value": 30}, {"x": "large", "value": 29}, {"x": "say", "value": 28}, {"x": "making", "value": 28}, {"x": "close", "value": 28}, {"x": "another", "value": 27}, {"x": "much", "value": 27}, {"x": "world", "value": 24}, {"x": "take", "value": 23}, {"x": "made", "value": 20}], 
-                "5": [{"x": "started", "value": 35}, {"x": "ran", "value": 96}, {"x": "went", "value": 77}, {"x": "hurried", "value": 75}, {"x": "tunnel", "value": 69}, {"x": "stopping", "value": 64}, {"x": "afterwards", "value": 60}, {"x": "straight", "value": 56}, {"x": "picking", "value": 54}, {"x": "dipped", "value": 54}, {"x": "trouble", "value": 49}, {"x": "occurred", "value": 46}, {"x": "time", "value": 45}, {"x": "twice", "value": 45}, {"x": "field", "value": 38}, {"x": "took", "value": 36}, {"x": "falling", "value": 35}, {"x": "beginning", "value": 34}, {"x": "late", "value": 29}, {"x": "day", "value": 25}, {"x": "bank", "value": 21}]}
-    console.log(text2[1]);
-    if(processedText.length>0){
-      text2 = processedText;
-    }
+    // let text2 = {"0": [{"x": "pop", "value": 75}], 
+    //             "1": [{x: "pictures", value: 150}, {x: "peeped",value: 75}, {x: "daisies", value: 75}, {x: "flashed", value: 75}], 
+    //             "2": [{"x": "watch", "value": 103}, {"x": "sitting", "value": 59}, {"x": "hear", "value": 58}], 
+    //             "3": [{"x": "actually", "value": 45}, {"x": "suddenly", "value": 179}, {"x": "conversations", "value": 133}, {"x": "mind", "value": 100}, {"x": "never", "value": 86}, {"x": "moment", "value": 85}, {"x": "nothing", "value": 82}, {"x": "thought", "value": 81}, {"x": "stupid", "value": 75}, {"x": "pleasure", "value": 75}, {"x": "curiosity", "value": 75}, {"x": "considering", "value": 71}, {"x": "fortunately", "value": 69}, {"x": "wondered", "value": 66}, {"x": "reading", "value": 60}, {"x": "remarkable", "value": 59}, {"x": "shall", "value": 54}, {"x": "ought", "value": 53}, {"x": "looked", "value": 49}, {"x": "seemed", "value": 46}, {"x": "quite", "value": 44}, {"x": "feel", "value": 43}, {"x": "getting", "value": 42}, {"x": "found", "value": 39}, {"x": "feet", "value": 38}, {"x": "either", "value": 37}, {"x": "seen", "value": 35}, {"x": "worth", "value": 32}, {"x": "whether", "value": 29}, {"x": "could", "value": 19}, {"x": "would", "value": 13}], 
+    //             "4": [{"x": "like", "value": 34}, {"x": "alice", "value": 452}, {"x": "rabbit", "value": 301}, {"x": "dear", "value": 150}, {"x": "sister", "value": 115}, {"x": "across", "value": 88}, {"x": "book", "value": 87}, {"x": "tired", "value": 75}, {"x": "sleepy", "value": 75}, {"x": "pink", "value": 75}, {"x": "oh", "value": 75}, {"x": "eyes", "value": 69}, {"x": "get", "value": 65}, {"x": "think", "value": 64}, {"x": "way", "value": 60}, {"x": "burning", "value": 59}, {"x": "hot", "value": 54}, {"x": "hedge", "value": 52}, {"x": "well", "value": 51}, {"x": "deep", "value": 49}, {"x": "white", "value": 43}, {"x": "natural", "value": 34}, {"x": "see", "value": 30}, {"x": "use", "value": 30}, {"x": "large", "value": 29}, {"x": "say", "value": 28}, {"x": "making", "value": 28}, {"x": "close", "value": 28}, {"x": "another", "value": 27}, {"x": "much", "value": 27}, {"x": "world", "value": 24}, {"x": "take", "value": 23}, {"x": "made", "value": 20}], 
+    //             "5": [{"x": "started", "value": 35}, {"x": "ran", "value": 96}, {"x": "went", "value": 77}, {"x": "hurried", "value": 75}, {"x": "tunnel", "value": 69}, {"x": "stopping", "value": 64}, {"x": "afterwards", "value": 60}, {"x": "straight", "value": 56}, {"x": "picking", "value": 54}, {"x": "dipped", "value": 54}, {"x": "trouble", "value": 49}, {"x": "occurred", "value": 46}, {"x": "time", "value": 45}, {"x": "twice", "value": 45}, {"x": "field", "value": 38}, {"x": "took", "value": 36}, {"x": "falling", "value": 35}, {"x": "beginning", "value": 34}, {"x": "late", "value": 29}, {"x": "day", "value": 25}, {"x": "bank", "value": 21}]}
+    // console.log(text2[1]);
+    let text2 ={}
+    // if(cloudText.length>0){
+      text2 = cloudText;
+    // }
+    console.log(text2)
                 //0-6: cluster number
     // output = {0: [{x: "learning", value: 80},{x: "includes", value: 56},{x: "lists", value: 44}, etc], 1:[{},{},{},etc] }
 
@@ -195,8 +212,9 @@ function makeDraggable(evt) {
       $('svg').attr('onload', "makeDraggable(evt)");
       
     });
+  }
 
-
+  // generateCloud(processedText);
 // });
 
   
