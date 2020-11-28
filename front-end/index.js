@@ -128,7 +128,7 @@ $( document ).ready(function() {
     const updateCloud = () => {
       $( "#vis" ).empty();
       generateCloud(wordCloudParams);
-      $('svg').attr('onload', "makeDraggable(evt)");
+ 
     }
 
     const saveAsImage =() =>{
