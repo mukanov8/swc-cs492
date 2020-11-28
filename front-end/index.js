@@ -102,7 +102,10 @@ $( document ).ready(function() {
       hoverColor: '#FFA317',
       selectColor: '#FFA317',
       wordColorIndex: 0,
-      clusterFlag: false
+      clusterFlag: false,
+      placeholderFlag: true,
+      //placeholder word cloud data
+      placeholderText: {"0": [{"x": "prototypes", "value": 138}, {"x": "prototype", "value": 554}, {"x": "ui", "value": 138}, {"x": "tested", "value": 101}], "1": [{"x": "time", "value": 41}, {"x": "novel", "value": 122}, {"x": "centered", "value": 117}, {"x": "features", "value": 111}, {"x": "page", "value": 109}, {"x": "three", "value": 98}, {"x": "design", "value": 95}, {"x": "created", "value": 79}, {"x": "separate", "value": 74}, {"x": "complete", "value": 68}, {"x": "management", "value": 50}, {"x": "around", "value": 43}, {"x": "earlier", "value": 40}, {"x": "one", "value": 26}], "2": [{"x": "interactive", "value": 138}, {"x": "reuse", "value": 138}, {"x": "login", "value": 138}, {"x": "users", "value": 88}], "3": [{"x": "stages", "value": 97}, {"x": "distinct", "value": 138}, {"x": "interaction", "value": 138}, {"x": "functional", "value": 128}, {"x": "complex", "value": 85}], "4": [{"x": "scenarios", "value": 117}, {"x": "tasks", "value": 513}, {"x": "detailed", "value": 82}, {"x": "data", "value": 58}], "5": [{"x": "enough", "value": 63}, {"x": "build", "value": 222}, {"x": "need", "value": 166}, {"x": "support", "value": 162}, {"x": "fake", "value": 138}, {"x": "fed", "value": 99}, {"x": "revise", "value": 98}, {"x": "choose", "value": 95}, {"x": "supports", "value": 89}, {"x": "flexible", "value": 85}, {"x": "sure", "value": 80}, {"x": "intend", "value": 79}, {"x": "ready", "value": 75}, {"x": "mean", "value": 72}, {"x": "needs", "value": 68}, {"x": "means", "value": 68}, {"x": "fully", "value": 66}, {"x": "rather", "value": 63}, {"x": "target", "value": 56}, {"x": "least", "value": 55}, {"x": "make", "value": 46}, {"x": "may", "value": 42}]}
     };
 
     //updates word cloud according to user configurations
@@ -173,6 +176,7 @@ $( document ).ready(function() {
       console.log("Error"+ "\n");
     };
     function sendMessage(){
+      wordCloudParams.placeholderFlag = false;
       let message = document.getElementById("text").value;
       message = wordCloudParams.clusterNum.toString()+":"+message;
       console.log("Send to Server => "+message+"\n")
@@ -194,22 +198,14 @@ $( document ).ready(function() {
     document.getElementById("apply").addEventListener("click", ()=> {updateParams()} );
     document.getElementById("clusters").addEventListener("change", ()=> {updateClusters()} );
     document.getElementById("download-png").addEventListener("click", () =>{saveAsImage()} );
-
+    
     //main function for generating the word cloud
     const generateCloud = (wordCloudParams) => {
       anychart.onDocumentReady(function () {
 
-      //below is sample input text for word cloud with 6 subclouds
-      // let text2 = {"0": [{"x": "pop", "value": 75}], 
-      //             "1": [{x: "pictures", value: 150}, {x: "peeped",value: 75}, {x: "daisies", value: 75}, {x: "flashed", value: 75}], 
-      //             "2": [{"x": "watch", "value": 103}, {"x": "sitting", "value": 59}, {"x": "hear", "value": 58}], 
-      //             "3": [{"x": "actually", "value": 45}, {"x": "suddenly", "value": 179}, {"x": "conversations", "value": 133}, {"x": "mind", "value": 100}, {"x": "never", "value": 86}, {"x": "moment", "value": 85}, {"x": "nothing", "value": 82}, {"x": "thought", "value": 81}, {"x": "stupid", "value": 75}, {"x": "pleasure", "value": 75}, {"x": "curiosity", "value": 75}, {"x": "considering", "value": 71}, {"x": "fortunately", "value": 69}, {"x": "wondered", "value": 66}, {"x": "reading", "value": 60}, {"x": "remarkable", "value": 59}, {"x": "shall", "value": 54}, {"x": "ought", "value": 53}, {"x": "looked", "value": 49}, {"x": "seemed", "value": 46}, {"x": "quite", "value": 44}, {"x": "feel", "value": 43}, {"x": "getting", "value": 42}, {"x": "found", "value": 39}, {"x": "feet", "value": 38}, {"x": "either", "value": 37}, {"x": "seen", "value": 35}, {"x": "worth", "value": 32}, {"x": "whether", "value": 29}, {"x": "could", "value": 19}, {"x": "would", "value": 13}], 
-      //             "4": [{"x": "like", "value": 34}, {"x": "alice", "value": 452}, {"x": "rabbit", "value": 301}, {"x": "dear", "value": 150}, {"x": "sister", "value": 115}, {"x": "across", "value": 88}, {"x": "book", "value": 87}, {"x": "tired", "value": 75}, {"x": "sleepy", "value": 75}, {"x": "pink", "value": 75}, {"x": "oh", "value": 75}, {"x": "eyes", "value": 69}, {"x": "get", "value": 65}, {"x": "think", "value": 64}, {"x": "way", "value": 60}, {"x": "burning", "value": 59}, {"x": "hot", "value": 54}, {"x": "hedge", "value": 52}, {"x": "well", "value": 51}, {"x": "deep", "value": 49}, {"x": "white", "value": 43}, {"x": "natural", "value": 34}, {"x": "see", "value": 30}, {"x": "use", "value": 30}, {"x": "large", "value": 29}, {"x": "say", "value": 28}, {"x": "making", "value": 28}, {"x": "close", "value": 28}, {"x": "another", "value": 27}, {"x": "much", "value": 27}, {"x": "world", "value": 24}, {"x": "take", "value": 23}, {"x": "made", "value": 20}], 
-      //             "5": [{"x": "started", "value": 35}, {"x": "ran", "value": 96}, {"x": "went", "value": 77}, {"x": "hurried", "value": 75}, {"x": "tunnel", "value": 69}, {"x": "stopping", "value": 64}, {"x": "afterwards", "value": 60}, {"x": "straight", "value": 56}, {"x": "picking", "value": 54}, {"x": "dipped", "value": 54}, {"x": "trouble", "value": 49}, {"x": "occurred", "value": 46}, {"x": "time", "value": 45}, {"x": "twice", "value": 45}, {"x": "field", "value": 38}, {"x": "took", "value": 36}, {"x": "falling", "value": 35}, {"x": "beginning", "value": 34}, {"x": "late", "value": 29}, {"x": "day", "value": 25}, {"x": "bank", "value": 21}]}
-      // if(wordCloudParams.processedText.length>0){
-      text2 = wordCloudParams.processedText;
-      // }
- 
+      if (wordCloudParams.placeholderFlag) text2 = wordCloudParams.placeholderText;
+      else text2 = wordCloudParams.processedText;
+      
       // create tag cloud
       let stage = acgraph.create('vis');
       let charts = [];
@@ -259,4 +255,5 @@ $( document ).ready(function() {
         
       });
   }
+  generateCloud(wordCloudParams);
 })
