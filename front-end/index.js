@@ -5,7 +5,13 @@
     svg.addEventListener('mousedown', startDrag);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
-    svg.addEventListener('mouseleave', endDrag);
+    //svg.addEventListener('mouseleave', endDrag);
+
+    var groups = $('svg').children().children();
+    groups.map((group) => {
+      $(group).children()[1].attr("transform").toString().split('matrix')[1];
+    });
+    console.log("groups:", groups);
     function getMousePosition(evt) {
       let CTM = svg.getScreenCTM();
       return {
@@ -66,8 +72,10 @@
       }
     }
     function endDrag(evt) {
-      selectedElement.parent().removeChild(selectedElement);
-      selectedElementText.parent().removeChild(selectedElementText);
+     // $(selectedElement).parent().remove(selectedElement);
+      //$(selectedElementText).parent().remove(selectedElementText);
+      var fc = $(selectedElement).parent().parent().attr('transform').toString();
+      console.log(fc.split("matrix"));
       selectedElement = null;
       selectedElementText = null;
     }
@@ -135,6 +143,7 @@ $( document ).ready(function() {
     const updateCloud = () => {
       $( "#vis" ).empty();
       generateCloud(wordCloudParams);
+      document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
  
     }
     //makes the screenshot and downloads the WC
@@ -247,7 +256,7 @@ $( document ).ready(function() {
           // initiate chart drawing
           charts[j].draw();
         }
-        document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
+        
       });
   }
 })
