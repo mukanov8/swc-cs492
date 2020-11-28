@@ -74,9 +74,12 @@
   }
 
 $( document ).ready(function() { 
-  
-    const webSocket = new WebSocket("ws://175.215.17.245:9998");
+    //Timothy's server 
+    // const webSocket = new WebSocket("ws://175.215.17.245:9998");
 
+    //Ayan's server 
+    const webSocket = new WebSocket("ws://110.76.76.69:9998");
+    
     //use the bottom one if you want connect to local server
     // const webSocket = new WebSocket("ws://127.0.0.1:9998");
     
