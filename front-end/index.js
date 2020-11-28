@@ -74,20 +74,78 @@
 
 $( document ).ready(function() { 
   
-    const webSocket = new WebSocket("ws://175.215.17.245:9998");
+    // const webSocket = new WebSocket("ws://175.215.17.245:9998");
+    const webSocket = new WebSocket("ws://127.0.0.1:9998");
     
     let wordCloudParams = {
       processedText: {},
       clusterNum: 6,
-      mode: ['rect', 'by-word'],
+      mode: 1,
       angles: [0, 0],
       textSpacing: 1,
       font: 'Times New Roman',
       hoverColor: '#FFA317',
       selectColor: '#FFA317',
       wordColorIndex: 0,
+      clusterFlag: false
     };
+    //updates word cloud according to user configurations
+    const updateParams = () => { 
+        //checks which mode was choosen
+        let rbs = document.querySelectorAll('input[name="mode"]');
+        for (let rb of rbs) {
+            if (rb.checked) {
+                wordCloudParams.mode = parseInt(rb.value);
+                break;
+            }
+        }
+        //checks the chosen angles
+        wordCloudParams.angles = [parseInt(document.getElementById("anglefrom").value), parseInt(document.getElementById("angleto").value)]
+        //checks the chosen words color 
+        wordCloudParams.wordColorIndex = parseInt(document.getElementById("wordcolor").value);
+        //checks the chosen spacing bt words
+        wordCloudParams.textSpacing = parseInt(document.getElementById("textspacing").value);
+        //checks the chosen font
+        wordCloudParams.font = document.getElementById("font").value;
+        //
+        if (wordCloudParams.clusterFlag){
+          wordCloudParams.clusterFlag = false;
+          console.log(wordCloudParams);
+          sendMessage();
+        }  
+        else updateCloud()
+        
+    }
+    const updateClusters = () =>{
+      let newClusterNum = parseInt(document.getElementById("clusters").value)
+      if (newClusterNum!=wordCloudParams.clusterNum){
+        wordCloudParams.clusterFlag = true;
+        wordCloudParams.clusterNum = newClusterNum;
+      }
+      else wordCloudParams.clusterFlag = false;
+    }
+    const updateCloud = () => {
+      $( "#vis" ).empty();
+      generateCloud(wordCloudParams);
+      $('svg').attr('onload', "makeDraggable(evt)");
+    }
 
+    const saveAsImage =() =>{
+      const screenshotTarget = document.getElementById("vis");
+      const downloadURI= (uri, name) =>{
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        link.click();
+        //after creating link you should delete dynamic link (not implemented)
+        // clearDynamicLink(link); 
+      }
+      html2canvas(screenshotTarget).then((canvas) => {
+          let myImage = canvas.toDataURL("image/png");;
+          downloadURI("data:" + myImage, "myWordCloud.png");
+      });
+    }
+ 
     webSocket.onopen = function(message){
       console.log("Server Connect"+"\n")
     };
@@ -99,8 +157,8 @@ $( document ).ready(function() {
     };
     function sendMessage(){
       let message = document.getElementById("text").value;
-      console.log("Send to Server => "+message+"\n")
       message = wordCloudParams.clusterNum.toString()+":"+message;
+      console.log("Send to Server => "+message+"\n")
       webSocket.send(message);
     }
     function disconnect(){
@@ -110,12 +168,14 @@ $( document ).ready(function() {
       wordCloudParams.processedText = {};
       wordCloudParams.processedText = JSON.parse(message.data.slice(9));
       console.log("Recieved From Server"+"\n");
-      $( "#vis" ).empty();
-      generateCloud(wordCloudParams);
-      $('svg').attr('onload', "makeDraggable(evt)");
+      updateCloud();
+      
     };
 
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
+    document.getElementById("apply").addEventListener("click", ()=> {updateParams()} );
+    document.getElementById("clusters").addEventListener("change", ()=> {updateClusters()} );
+    document.getElementById("download-png").addEventListener("click", () =>{saveAsImage()} );
 
 
     
@@ -138,6 +198,11 @@ $( document ).ready(function() {
       let stage = acgraph.create('vis');
       let charts = [];
       let colors = [anychart.scales.ordinal(), anychart.scales.linearColor()]
+      let modes = ['rect', 'circular']
+
+      // console.log("modeCheck");
+      // console.log(modes[wordCloudParams.mode]);
+      // console.log("modeCheck");
 
       for (let i = 0; i < wordCloudParams.clusterNum; i ++){
         charts.push(anychart.tagCloud(text2));
@@ -146,7 +211,7 @@ $( document ).ready(function() {
         let boundVals = j<3 ? [j*'33' +'%', "0%", "33%", "50%"] : [(j-3)*'33' +'%', "50%", "33%", "50%"]
           // set data with settings
         charts[j].data(text2[j], {
-          mode: wordCloudParams.mode,
+          mode: modes[wordCloudParams.mode],
           // minLength: 4,
           // maxItems: 100
         });
@@ -159,7 +224,7 @@ $( document ).ready(function() {
           .colorScale(colors[wordCloudParams.wordColorIndex])
           // set settings for normal state
           .normal({
-            fontFamily:  wordCloudParams.font
+            fontFamily:  wordCloudParams.font,
           })
           // set settings for hovered state
           .hovered({
