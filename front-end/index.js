@@ -48,6 +48,15 @@ function makeDraggable(evt) {
     offset.x -= transform_text.matrix.e;
     offset.y -= transform_text.matrix.f;
 
+    //Change wordcloud order in DOM
+    var children = $('#ac_layer_1').children();
+    // console.log(children.map((child) => {return child.id;}))
+    if ($(selectedElement).parent().parent().parent() !== children[-1]){
+      $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
+    }
+    console.log(children.map((child) => {return child.id;}));
+
+
   }
   function drag(evt) {
     if (selectedElement && selectedElementText) {
@@ -200,3 +209,4 @@ function makeDraggable(evt) {
 // });
 
   
+
