@@ -55,8 +55,6 @@
       //   $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
       // }
       // console.log(children.map((child) => {return child.id;}));
-
-
     }
     function drag(evt) {
       if (selectedElement && selectedElementText) {
@@ -74,9 +72,12 @@
 
 $( document ).ready(function() { 
   
-    // const webSocket = new WebSocket("ws://175.215.17.245:9998");
-    const webSocket = new WebSocket("ws://127.0.0.1:9998");
+    const webSocket = new WebSocket("ws://175.215.17.245:9998");
+
+    //use the bottom one if you want connect to local server
+    // const webSocket = new WebSocket("ws://127.0.0.1:9998");
     
+    //parameters that user can modify and that are passed to WC.
     let wordCloudParams = {
       processedText: {},
       clusterNum: 6,
@@ -89,9 +90,10 @@ $( document ).ready(function() {
       wordColorIndex: 0,
       clusterFlag: false
     };
+
     //updates word cloud according to user configurations
     const updateParams = () => { 
-        //checks which mode was choosen
+        //checks which word cloud mode was choosen
         let rbs = document.querySelectorAll('input[name="mode"]');
         for (let rb of rbs) {
             if (rb.checked) {
@@ -107,15 +109,14 @@ $( document ).ready(function() {
         wordCloudParams.textSpacing = parseInt(document.getElementById("textspacing").value);
         //checks the chosen font
         wordCloudParams.font = document.getElementById("font").value;
-        //
+        //checks if cluster number has changed->either updates the cloud or sends updated data to server
         if (wordCloudParams.clusterFlag){
           wordCloudParams.clusterFlag = false;
-          console.log(wordCloudParams);
           sendMessage();
         }  
         else updateCloud()
-        
     }
+    //checks if the #of clusters changed(#of categories) by user. Updates the WC parameter accordingly.
     const updateClusters = () =>{
       let newClusterNum = parseInt(document.getElementById("clusters").value)
       if (newClusterNum!=wordCloudParams.clusterNum){
@@ -124,12 +125,13 @@ $( document ).ready(function() {
       }
       else wordCloudParams.clusterFlag = false;
     }
+    //re-renders the cloud with updated parameters
     const updateCloud = () => {
       $( "#vis" ).empty();
       generateCloud(wordCloudParams);
       $('svg').attr('onload', "makeDraggable(evt)");
     }
-
+    //makes the screenshot and downloads the WC
     const saveAsImage =() =>{
       const screenshotTarget = document.getElementById("vis");
       const downloadURI= (uri, name) =>{
@@ -169,17 +171,16 @@ $( document ).ready(function() {
       wordCloudParams.processedText = JSON.parse(message.data.slice(9));
       console.log("Recieved From Server"+"\n");
       updateCloud();
-      
     };
 
+    //the user text input send button, user customization apply button, 
+    //user selected #of cluster button, user download WC button listeners 
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
     document.getElementById("apply").addEventListener("click", ()=> {updateParams()} );
     document.getElementById("clusters").addEventListener("change", ()=> {updateClusters()} );
     document.getElementById("download-png").addEventListener("click", () =>{saveAsImage()} );
 
-
-    
-
+    //main function for generating the word cloud
     const generateCloud = (wordCloudParams) => {
       anychart.onDocumentReady(function () {
 
@@ -200,10 +201,6 @@ $( document ).ready(function() {
       let colors = [anychart.scales.ordinal(), anychart.scales.linearColor()]
       let modes = ['rect', 'circular']
 
-      // console.log("modeCheck");
-      // console.log(modes[wordCloudParams.mode]);
-      // console.log("modeCheck");
-
       for (let i = 0; i < wordCloudParams.clusterNum; i ++){
         charts.push(anychart.tagCloud(text2));
       }
@@ -218,6 +215,7 @@ $( document ).ready(function() {
         charts[j]
           // set array of angles, by which words will be placed
           .angles(wordCloudParams.angles)
+          // set the spacing between the word in WC
           .textSpacing(wordCloudParams.textSpacing)
           .bounds(boundVals)
           // set color scale
@@ -235,16 +233,15 @@ $( document ).ready(function() {
             fill: wordCloudParams.selectColor,
             fontWeight: 'bold'
           })
+          // customize  the tooltip
           .tooltip().format('Importance: {%Value}');
 
           // set container id for the chart
           charts[j].container(stage);
           // initiate chart drawing
           charts[j].draw();
-
         }
         document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
       });
   }
-
 })
