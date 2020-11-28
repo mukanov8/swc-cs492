@@ -48,12 +48,13 @@
       offset.y -= transform_text.matrix.f;
 
       //Change wordcloud order in DOM
-      var children = $('#ac_layer_1').children();
-      // console.log(children.map((child) => {return child.id;}))
-      if ($(selectedElement).parent().parent().parent() !== children[-1]){
-        $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
-      }
-      console.log(children.map((child) => {return child.id;}));
+      $('svg').children()[0].children()[0];
+      // var children = 
+      // // console.log(children.map((child) => {return child.id;}))
+      // if ($(selectedElement).parent().parent().parent() !== children[-1]){
+      //   $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
+      // }
+      // console.log(children.map((child) => {return child.id;}));
 
 
     }
@@ -122,6 +123,9 @@ $( document ).ready(function() {
     //   console.log(document.getElementById("text").value)
     // }
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
+
+
+    
 
     const generateCloud = (cloudText) => {
       anychart.onDocumentReady(function () {
@@ -212,7 +216,7 @@ $( document ).ready(function() {
         }
         
 
-        $('svg').attr('onload', "makeDraggable(evt)");
+        document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));
         
       });
   }
