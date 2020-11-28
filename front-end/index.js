@@ -102,11 +102,8 @@ $( document ).ready(function() {
       console.log("Recieved From Server"+"\n");
       $( "#vis" ).empty();
       generateCloud(processedText);
-<<<<<<< Updated upstream
       $('svg').attr('onload', "makeDraggable(evt)");
       // processedText = JSON.parse(message.data);
-=======
->>>>>>> Stashed changes
     };
     // const sendUserText = ()=>{
     //   //TO-DO send message(user's input) via WebSocket to the server
