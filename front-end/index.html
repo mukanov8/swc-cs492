@@ -7,85 +7,58 @@
 
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
     <link rel="stylesheet" href="index.css">
-    <title>Semantic Word  Cloud</title>
+    <title>Semantic Word Cloud Generator</title>
   </head>
- <head>
-  
-  
-<!-- <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script> -->
-<!-- <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> -->
- </head>
 
- <body>
+  <body>
+
   <div id="vis"></div>
-  <!-- <div id= "custom">
-  <form id="form">
 
-<p style="position: absolute; right: 0; top: 0" id="status"></p> -->
-
-<div id="custom-area" style="text-align: center">
-  <!-- <div id="custom-area"> -->
-    <p><label for="text">Paste your text below!</label>
-    <p><textarea id="text">
-      Now's the time for a fully functional and interactive prototype that is ready to be tested by your target users. You need to build a prototype that supports end-to-end scenarios. Your prototype needs to support at least three distinct tasks. This does not mean you need to build three separate prototypes, but rather this means you need to build one complete prototype that is flexible enough to support the three tasks. You may choose to reuse or revise the tasks and the UI you created in earlier stages. Make sure your tasks are centered around novel human-AI interaction you intend to support. Other features (e.g., detailed my page design, complex login management) can be hard-coded or fed with fake data.
-    </textarea>
-    <button id="go" type="submit">Go!</button>
-    <hr>
-
-<div style="float: right; text-align: right">
-  <p><label for="textspacing">Spacing between words</label> <input type="number" value="1" min="0" max="10" id="textspacing">
-  <p><label for="font">Font:</label>
-    <select id="font">
-      <option value = 'Times New Roman'>  Times New Roman</option>
-      <option value = 'Verdana'>  Verdana </option>
-      <!-- <option value = 'Helvetica'>  Helvetica </option> -->
-      <option value = 'Arial'>  Arial </option>
-   </select> 
-
-  <p><label>Download:</label>
-    <button id="download-png">PNG</button>
-    <!-- <button id="download-svg">SVG</button>| -->
-    <!-- <a id="download-png" href="#">PNG</a> -->
-</div>
-
-<div style="float: left">
-  <p><label>Mode:</label>
-    <label for="circular"><input type="radio" name="mode" id="circular" value='1' checked="checked"> Circular</label>
-    <label for="rectangular"><input type="radio" name="mode" id="rectangular" value='0'> Rectangular</label>
-  <p><label for="clusterNum">Number of categories:</label>
-    <label for="clusterNum"><input type = "number" value = "6" min ="1" max ="6" id = "clusters"> clusters </label>
-  
-  <!-- <p><label for="font">Font:</label> <input type="text" id="font" value="Impact"> -->
-</div>
-
-<div>
-    <p><label for="anglefrom">Word orientations</label> <input type="number" id="anglefrom" value="-0" min="-90" max="90"> °
-    <label for="angleto">to</label> <input type="number" id="angleto" value="0" min="-90" max="90"> °
-    <p>
-      <label for="wordcolor">Select word colors</label>
-      <select id="wordcolor">
-        <option value = '0'>  Default color</option>
-        <option value = '1'>  Blue monochrome</option>
-     </select> 
-    <p>
-      <label for="apply"> Apply changes to the cloud</label>
-      <button id="apply"> Update</button>
-</div>
-
-<hr style="clear: both">
-  <!-- </div> -->
-</div>
-
+  <div id="custom-area" style="text-align: center">
+      <p> <label for="text">Paste your text below!</label>
+      <p> <textarea id="text">
+          Now's the time for a fully functional and interactive prototype that is ready to be tested by your target users. You need to build a prototype that supports end-to-end scenarios. Your prototype needs to support at least three distinct tasks. This does not mean you need to build three separate prototypes, but rather this means you need to build one complete prototype that is flexible enough to support the three tasks. You may choose to reuse or revise the tasks and the UI you created in earlier stages. Make sure your tasks are centered around novel human-AI interaction you intend to support. Other features (e.g., detailed my page design, complex login management) can be hard-coded or fed with fake data.
+          </textarea>
+      <button id="go" type="submit">Go!</button>
+      <hr>
+  <div style="float: right; text-align: right">
+    <p> <label for="textspacing">Spacing between words</label> <input type="number" value="1" min="0" max="10" id="textspacing">
+    <p> <label for="font">Font:</label>
+        <select id="font">
+          <option value = 'Times New Roman'>  Times New Roman</option>
+          <option value = 'Verdana'>  Verdana </option>
+          <option value = 'Arial'>  Arial </option>
+        </select> 
+    <p> <label>Download:</label>
+        <button id="download-png">PNG</button>
+  </div>
+  <div style="float: left">
+    <p> <label>Mode:</label>
+        <label for="circular"><input type="radio" name="mode" id="circular" value='1' checked="checked"> Circular</label>
+        <label for="rectangular"><input type="radio" name="mode" id="rectangular" value='0'> Rectangular</label>
+    <p> <label for="clusterNum">Number of categories:</label>
+        <label for="clusterNum"><input type = "number" value = "6" min ="1" max ="6" id = "clusters"> clusters </label>
+  </div>
+  <div>
+    <p> <label for="anglefrom">Word orientations</label> <input type="number" id="anglefrom" value="-0" min="-90" max="90"> °
+        <label for="angleto">to</label> <input type="number" id="angleto" value="0" min="-90" max="90"> °
+    <p> <label for="wordcolor">Select word colors</label>
+        <select id="wordcolor">
+          <option value = '0'>  Default color</option>
+          <option value = '1'>  Blue monochrome</option>
+        </select> 
+    <p> <label for="apply"> Apply changes to the cloud</label>
+        <button id="apply"> Update</button>
+  </div>
+  <!-- <hr style="clear: both"> -->
+  </div>
 
 
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-  <!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script> -->
-  <!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script> -->
-  <!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script> -->
   <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script> 
-  <script src="index.js"></script>
-  <!-- <script type="text/javascript" src="swfobject.js"></script> -->
-  <!-- <script type="text/javascript" src="web_socket.js"></script> -->
   <script src= "https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"> </script> 
+  <script src="index.js"></script>
+
 </body>
+
 </html>
