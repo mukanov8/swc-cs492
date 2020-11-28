@@ -8,10 +8,11 @@ from nltk.corpus import reuters, stopwords
 from gensim.models import KeyedVectors
 
 NUM_OF_KEYWORDS = 150
-NUM_OF_CLUSTERS = 6
 
 def preprocess_text(text_string):
     tokens = word_tokenize(text_string)
+    num_of_clusters = int(tokens[0].split(':')[0])
+
     # lowercasing and removing punctuation
     tokens = [token.lower() for token in tokens if token.isalpha()]
     # removing extremely common words
@@ -21,7 +22,7 @@ def preprocess_text(text_string):
     # Enable stemming if desired
     # stemmer = SnowballStemmer("english")
     # tokens = [stemmer.stem(token) for token in tokens]
-    return tokens
+    return (tokens,num_of_clusters)
 
 def read_idf_values():
     N = len(reuters.fileids())
@@ -58,7 +59,7 @@ def get_keywords(tokens):
     keywords = get_top_tfidf_words(tfidfs,NUM_OF_KEYWORDS)
     return keywords,tfidfs
 
-def get_keywords_clusters(keywords):
+def get_keywords_clusters(keywords,num_of_clusters):
     word_vecs = KeyedVectors.load('word2vec.wordvectors',mmap='r')
     
     # Removing words not present in the model vocab
@@ -72,11 +73,11 @@ def get_keywords_clusters(keywords):
     # 1) Randomly select a word to initialize each cluster
     # 2) One by one, insert each remaining word in the cluster which has the highest average similarity
     #       between the word and all words currently in the cluster
-    seeds = random.sample(keywords,NUM_OF_CLUSTERS)
+    seeds = random.sample(keywords,num_of_clusters)
     clusters = [[seed] for seed in seeds]
     for keyword in keywords:
         if keyword not in seeds:
-            similarity_to_clusters = [0]*NUM_OF_CLUSTERS
+            similarity_to_clusters = [0]*num_of_clusters
             for i,cluster in enumerate(clusters):
                 sum = 0
                 for word in cluster:
@@ -98,12 +99,12 @@ def produce_json(tfidfs,clusters):
 def get_json_clusters(text_string):
     #text_string = sys.argv[1]
     
-    tokens = preprocess_text(text_string)
+    (tokens,num_of_clusters) = preprocess_text(text_string)
     
     (keywords,tfidfs) = get_keywords(tokens)
     #[print(keyword,tfidfs[keyword]) for keyword in keywords]
 
-    clusters = get_keywords_clusters(keywords)
+    clusters = get_keywords_clusters(keywords,num_of_clusters)
     #[print(cluster) for cluster in clusters]
     
     json_string = produce_json(tfidfs,clusters)
