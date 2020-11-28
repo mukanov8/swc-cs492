@@ -1,6 +1,7 @@
 function makeDraggable(evt) {
-
+  
   var svg = evt.target;
+  console.log(svg);
   var selectedElement = false;
   var selectedElementText = false;
   svg.addEventListener('mousedown', startDrag);
@@ -49,12 +50,12 @@ function makeDraggable(evt) {
     offset.y -= transform_text.matrix.f;
 
     //Change wordcloud order in DOM
-    var children = $('#ac_layer_1').children();
-    // console.log(children.map((child) => {return child.id;}))
-    if ($(selectedElement).parent().parent().parent() !== children[-1]){
-      $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
-    }
-    console.log(children.map((child) => {return child.id;}));
+    // var children = $('#ac_layer_1').children();
+    // // console.log(children.map((child) => {return child.id;}))
+    // if ($(selectedElement).parent().parent().parent() !== children[-1]){
+    //   $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
+    // }
+    // console.log(children.map((child) => {return child.id;}));
 
 
   }
@@ -76,7 +77,7 @@ function makeDraggable(evt) {
     // var webSocket = new WebSocket("ws://localhost:9998");
     const webSocket = new WebSocket("ws://175.215.17.245:9998");
     // const WebSocket = require('ws');
-    WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
+    //WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
     // const webSocket = new WebSocket('wss://172.30.1.48:9998');
     
     let processedText = {};
@@ -122,6 +123,9 @@ function makeDraggable(evt) {
       console.log(document.getElementById("text").value)
     }
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
+
+
+    
 
     const generateCloud = (cloudText) => {
 
@@ -222,8 +226,7 @@ function makeDraggable(evt) {
 
       }
       
-
-      $('svg').attr('onload', "makeDraggable(evt)");
+      document.querySelector("svg").addEventListener('mouseover', makeDraggable(evt));
       
     });
   }
