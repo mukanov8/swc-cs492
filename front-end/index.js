@@ -93,7 +93,7 @@ function makeDraggable(evt) {
     };
    
     function sendMessage(){
-      let message = document.getElementById("text").innerHTML;
+      let message = document.getElementById("text").value;
       console.log("Send to Server => "+message+"\n")
       webSocket.send(message);
       // message.value = "";
@@ -103,8 +103,9 @@ function makeDraggable(evt) {
     }
 
     webSocket.onmessage = function(message){
+      processedText = {};
       processedText = JSON.parse(message.data.slice(9));
-      console.log(processedText);
+
       console.log("Recieved From Server"+"\n");
       // document.getElementById("vis").innerHTML = "";
       // let div = document.getElementById('vis');
@@ -117,7 +118,7 @@ function makeDraggable(evt) {
     };
     const sendUserText = ()=>{
       //TO-DO send message(user's input) via WebSocket to the server
-      console.log(document.getElementById("text").innerHTML)
+      console.log(document.getElementById("text").value)
     }
     document.getElementById("go").addEventListener("click", ()=> {sendMessage()} );
 
@@ -163,7 +164,10 @@ function makeDraggable(evt) {
     // if(cloudText.length>0){
       text2 = cloudText;
     // }
-    console.log(text2)
+    // console.log("cloud");
+    // console.log(text2)
+    // console.log("cloud");
+
                 //0-6: cluster number
     // output = {0: [{x: "learning", value: 80},{x: "includes", value: 56},{x: "lists", value: 44}, etc], 1:[{},{},{},etc] }
 
