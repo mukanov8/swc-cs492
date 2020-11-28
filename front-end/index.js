@@ -114,6 +114,7 @@ function makeDraggable(evt) {
       // }
       $( "#vis" ).empty();
       generateCloud(processedText);
+      $('svg').attr('onload', "makeDraggable(evt)");
       // processedText = JSON.parse(message.data);
     };
     const sendUserText = ()=>{
