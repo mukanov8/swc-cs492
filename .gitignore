@@ -1,2 +1,7 @@
 .DS_Store
 node_modules
+glove.6B
+idf_reuters.csv
+word2vec.wordvectors
+word2vec.wordvectors.vectors.npy
+__pycache__
