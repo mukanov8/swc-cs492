@@ -77,7 +77,19 @@ $( document ).ready(function() {
     // WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
     
     let processedText = {};
+    let wordCloudParams = {
+      processedText: {},
+      clusterNum: 6,
+      mode: ['rect', 'by-word'],
+      angles: [0, 0],
+      textSpacing: 1,
+      font: 'Times New Roman',
+      hoverColor: '#FFA317',
+      selectColor: '#FFA317',
+
+    };
     let clusterNum = 6;
+
     webSocket.onopen = function(message){
       console.log("Server Connect"+"\n")
     };
@@ -165,7 +177,7 @@ $( document ).ready(function() {
         charts[j].data(text2[j], {
           mode: 'by-word',
           // minLength: 4,
-          // maxItems: 100s
+          // maxItems: 100
         });
         // set chart title
         charts[j]
@@ -174,8 +186,8 @@ $( document ).ready(function() {
           // )
           // set array of angles, by which words will be placed
           .angles([0])
+          .textSpacing(1)
           .bounds(boundVals)
-          // enabled color range
           // set color scale
           .colorScale(anychart.scales.ordinalColor())
           // set settings for normal state
@@ -184,11 +196,11 @@ $( document ).ready(function() {
           })
           // set settings for hovered state
           .hovered({
-            fill: '#df8892'
+            fill: '#FFA317'
           })
           // set settings for selected state
           .selected({
-            fill: '#df8892',
+            fill: '#FFA317',
             fontWeight: 'bold'
           });
 
