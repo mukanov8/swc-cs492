@@ -1,7 +1,10 @@
+
 function makeDraggable(evt) {
   var svg = evt.target;
   var selectedElement = false;
   var selectedElementText = false;
+
+  
   svg.addEventListener('mousedown', startDrag);
   svg.addEventListener('mousemove', drag);
   svg.addEventListener('mouseup', endDrag);
@@ -21,7 +24,8 @@ function makeDraggable(evt) {
         selectedElementText = text_nodes[i];
       }
     }
-
+    // $(selectedElementText).attr('font-weight', 'bold');
+    // $(selectedElementText).attr('fill', 'green');
     var transforms = selectedElement.transform.baseVal;
     var transforms_text = selectedElementText.transform.baseVal;
     console.log(transforms, transforms_text, selectedElementText);
@@ -47,16 +51,28 @@ function makeDraggable(evt) {
     offset.x -= transform_text.matrix.e;
     offset.y -= transform_text.matrix.f;
 
+    var children = $('#ac_layer_1').children();
+    // console.log(children.map((child) => {return child.id;}))
+    if ($(selectedElement).parent().parent().parent() !== children[-1]){
+      $(selectedElement).parent().parent().parent().insertAfter(children[children.length-1]);
+    }
+    console.log(children.map((child) => {return child.id;}));
+
   }
   function drag(evt) {
     if (selectedElement && selectedElementText) {
       evt.preventDefault();
       var coord = getMousePosition(evt);
+      // $(selectedElementText).attr('font-weight', 'bold');
+      // $(selectedElementText).attr('fill', 'green');
+      console.log(coord.x - offset.x, coord.y - offset.y);
       transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
       transform_text.setTranslate(coord.x - offset.x, coord.y - offset.y);
     }
   }
   function endDrag(evt) {
+    // $(selectedElementText).attr('font-weight', 'normal');
+    // $(selectedElementText).attr('color', $(selectedElementText).next().attr('fill'));
     selectedElement = null;
     selectedElementText = null;
   }
@@ -99,6 +115,7 @@ anychart.onDocumentReady(function () {
     // create tag cloud
     //   var title = anychart.standalones.title();
     // title.padding(10).text('CS492 - Semantic Word Clouds');
+    
     var stage = acgraph.create('vis');
     var charts = [];
     for (var i = 0; i < 6; i ++){
@@ -122,22 +139,22 @@ anychart.onDocumentReady(function () {
       // set array of angles, by which words will be placed
       .angles([0])
       .bounds(boundVals)
-      // enabled color range
-      // set color scale
-      .colorScale(anychart.scales.ordinalColor())
+     
+      
       // set settings for normal state
       .normal({
-        fontFamily: 'Times New Roman'
+        fontFamily: 'Times New Roman',
+        fill: '#06477c'
       })
       // set settings for hovered state
       .hovered({
         fill: '#df8892'
       })
       // set settings for selected state
-      .selected({
-        fill: '#df8892',
-        fontWeight: 'bold'
-      });
+      // .selected({
+      //   fill: '#df8892',
+      //   fontWeight: 'bold'
+      // });
 
     // set container id for the chart
     charts[j].container(stage);
