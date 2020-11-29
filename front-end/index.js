@@ -2,21 +2,10 @@
     let svg = evt.target;
     let selectedElement = false;
     let selectedElementText = false;
-    if (svg.tagName == "path"){
-      return;
-    }
-    let flag = false;
-    evt.preventDefault();
     svg.addEventListener('mousedown', startDrag);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
     svg.addEventListener('mouseleave', endDrag);
-
-   // var groups = $('svg').children().children();
-    // groups.map((group) => {
-    //   $(group).children()[1].attr("transform").toString().split('matrix')[1];
-    // });
-    //console.log("groups:", groups);
     function getMousePosition(evt) {
       let CTM = svg.getScreenCTM();
       return {
@@ -25,7 +14,6 @@
       };
     }
     function startDrag(evt) {
-      flag = true;
       selectedElement = evt.target;
       let text_nodes = $(selectedElement).parent().next().children();
       for (let i = 0; i < text_nodes.length; i++){
@@ -75,22 +63,13 @@
         var coord = getMousePosition(evt);
         transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
         transform_text.setTranslate(coord.x - offset.x, coord.y - offset.y);
-        flag = true;
       }
     }
     function endDrag(evt) {
-     // $(selectedElement).parent().remove(selectedElement);
-      //$(selectedElementText).parent().remove(selectedElementText);
-     // evt.preventDefault();
-     if (flag === true){
-        var fc = $(selectedElement).parent().parent().attr('transform').toString();
-        console.log(fc.split("matrix"));
-        console.log(getMousePosition(evt));
-        flag = false;
-     }
+      selectedElement.parent().removeChild(selectedElement);
+      selectedElementText.parent().removeChild(selectedElementText);
       selectedElement = null;
       selectedElementText = null;
-      
     }
   }
 
@@ -99,7 +78,7 @@ $( document ).ready(function() {
     // const webSocket = new WebSocket("ws://175.215.17.245:9998");
 
     //Ayan's server 
-    const webSocket = new WebSocket("ws://110.76.76.69:9998");
+    const webSocket = new WebSocket("wss://110.76.76.69:9998");
     
     //use the bottom one if you want connect to local server
     // const webSocket = new WebSocket("ws://127.0.0.1:9998");
@@ -159,7 +138,7 @@ $( document ).ready(function() {
     const updateCloud = () => {
       $( "#vis" ).empty();
       generateCloud(wordCloudParams);
-      document.querySelector('svg').addEventListener('mousedown', (evt) => makeDraggable(evt));
+ 
     }
     //makes the screenshot and downloads the WC
     const saveAsImage =() =>{
@@ -264,35 +243,8 @@ $( document ).ready(function() {
           // initiate chart drawing
           charts[j].draw();
         }
-        
+        document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
       });
-      
   }
   generateCloud(wordCloudParams);
-     
-});
-
- // Select the node that will be observed for mutations
- const targetNode = document.getElementById('vis');
-
- // Options for the observer (which mutations to observe)
- const config = { attributes: false, childList: true, subtree: false };
-
- // Callback function to execute when mutations are observed
- const callback = function(mutationsList, observer) {
-     // Use traditional 'for loops' for IE 11
-     for(const mutation of mutationsList) {
-         if (mutation.type === 'childList') {
-             $('svg').click((evt) => makeDraggable(evt));
-         }
-     }
- };
-
- // Create an observer instance linked to the callback function
- const observer = new MutationObserver(callback);
-
- // Start observing the target node for configured mutations
- observer.observe(targetNode, config);
-
- // Later, you can stop observing
-// observer.disconnect();
+})
