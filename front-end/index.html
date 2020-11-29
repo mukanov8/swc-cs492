@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
+    <meta http-equiv="x-ua-compatible" content="ie=edge"> 
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-    <link rel="stylesheet" href="/front-end/index.css">
+     <link href="jquery.highlight-within-textarea.css" rel="stylesheet"> 
+    <link href="index.css" rel="stylesheet">
     <title>Semantic Word Cloud Generator</title>
   </head>
 
@@ -16,7 +16,7 @@
 
   <div id="custom-area" style="text-align: center">
       <p> <label for="text">Paste your text below!</label>
-      <p> <textarea id="text">
+      <p> <textarea id="text" style = "width: 100%; height: 100px;">
           Now's the time for a fully functional and interactive prototype that is ready to be tested by your target users. You need to build a prototype that supports end-to-end scenarios. Your prototype needs to support at least three distinct tasks. This does not mean you need to build three separate prototypes, but rather this means you need to build one complete prototype that is flexible enough to support the three tasks. You may choose to reuse or revise the tasks and the UI you created in earlier stages. Make sure your tasks are centered around novel human-AI interaction you intend to support. Other features (e.g., detailed my page design, complex login management) can be hard-coded or fed with fake data.
           </textarea>
       <button id="go" type="submit">Go!</button>
@@ -57,7 +57,11 @@
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script> 
   <script src= "https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"> </script> 
-  <script src="/front-end/index.js"></script>
+   <!-- highlight-within-textarea CSS/JS -->
+	<script src="jquery.highlight-within-textarea.js"></script>
+  
+  <script src="index.js"></script>
+  
 
 </body>
 

@@ -284,6 +284,14 @@ $( document ).ready(function() {
      for(const mutation of mutationsList) {
          if (mutation.type === 'childList') {
              $('svg').click((evt) => makeDraggable(evt));
+             $('svg g g g').dblclick(function(event){
+               event.preventDefault();
+               event.stopPropagation();
+              $('textarea').highlightWithinTextarea({
+                highlight: event.target.textContent
+              });
+              $('.hwt-container').css("width", "100%");
+             });
          }
      }
  };
@@ -296,3 +304,6 @@ $( document ).ready(function() {
 
  // Later, you can stop observing
 // observer.disconnect();
+
+
+
