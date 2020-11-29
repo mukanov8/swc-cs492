@@ -6,6 +6,7 @@ from nltk.corpus import reuters, stopwords
 # from nltk.stem.snowball import SnowballStemmer
 
 from gensim.models import KeyedVectors
+from sklearn import cluster
 
 NUM_OF_KEYWORDS = 150
 
@@ -69,22 +70,14 @@ def get_keywords_clusters(keywords,num_of_clusters):
             unknown.append(keyword)
             keywords.pop(i)
 
-    # Very naive clustering algorithm
-    # 1) Randomly select a word to initialize each cluster
-    # 2) One by one, insert each remaining word in the cluster which has the highest average similarity
-    #       between the word and all words currently in the cluster
-    seeds = random.sample(keywords,num_of_clusters)
-    clusters = [[seed] for seed in seeds]
-    for keyword in keywords:
-        if keyword not in seeds:
-            similarity_to_clusters = [0]*num_of_clusters
-            for i,cluster in enumerate(clusters):
-                sum = 0
-                for word in cluster:
-                    sum+=word_vecs.similarity(keyword,word)
-                similarity_to_clusters[i] = sum / len(cluster)
-            index_max = max(range(len(similarity_to_clusters)), key=similarity_to_clusters.__getitem__)
-            clusters[index_max].append(keyword)
+    keyword_vecs = [word_vecs[keyword] for keyword in keywords]
+
+    kmeans = cluster.KMeans(n_clusters = num_of_clusters,init = 'random', n_init = 50)
+    kmeans.fit(keyword_vecs)
+    labels = kmeans.labels_
+    clusters = [[] for i in range(num_of_clusters)]
+    for i,keyword in enumerate(keywords):
+        clusters[labels[i]].append(keyword)
     return clusters
 
 def produce_json(tfidfs,clusters):
