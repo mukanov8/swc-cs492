@@ -2,10 +2,18 @@
     let svg = evt.target;
     let selectedElement = false;
     let selectedElementText = false;
+    if (svg.tagName == "path"){
+      return;
+    }
+    let flag = false;
+
+    evt.preventDefault();
     svg.addEventListener('mousedown', startDrag);
     svg.addEventListener('mousemove', drag);
     svg.addEventListener('mouseup', endDrag);
     svg.addEventListener('mouseleave', endDrag);
+
+
     function getMousePosition(evt) {
       let CTM = svg.getScreenCTM();
       return {
@@ -14,6 +22,7 @@
       };
     }
     function startDrag(evt) {
+      flag = true;
       selectedElement = evt.target;
       let text_nodes = $(selectedElement).parent().next().children();
       for (let i = 0; i < text_nodes.length; i++){
@@ -53,7 +62,7 @@
       if ($(selectedElement).parent().parent().parent() !== children[children.length-2]){
         $(selectedElement).parent().parent().parent().insertAfter(children[children.length-2]);
       }
-      console.log(children.map((child) => {return child.id;}));
+     // console.log(children.map((child) => {return child.id;}));
 
 
     }
@@ -63,11 +72,18 @@
         var coord = getMousePosition(evt);
         transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
         transform_text.setTranslate(coord.x - offset.x, coord.y - offset.y);
+        flag = true;
       }
     }
     function endDrag(evt) {
-      selectedElement.parent().removeChild(selectedElement);
-      selectedElementText.parent().removeChild(selectedElementText);
+     // selectedElement.parent().removeChild(selectedElement);
+     // selectedElementText.parent().removeChild(selectedElementText);
+     if (flag === true){
+      var fc = $(selectedElement).parent().parent().attr('transform').toString();
+      console.log(fc.split("matrix"));
+      console.log(getMousePosition(evt));
+      flag = false;
+   }
       selectedElement = null;
       selectedElementText = null;
     }
