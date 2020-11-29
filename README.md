@@ -13,8 +13,8 @@ You’re in the right place if you want to make better word clouds. The science 
 
 ## How do I set it up for myself?
 1) Clone this repo 
-2) Download  and unzip the pre-trained word vectors from http://nlp.stanford.edu/data/glove.6B.zip into the back-end subfolder 
+2) Download  and unzip the pre-trained word vectors from http://nlp.stanford.edu/data/glove.6B.zip into the back-end directory 
 4) Run build_idf_csv.py to build a table of reference Inverse Document Frequency (IDF) values
 5) Run convert_format.py
 6) Run ws.py to get the server going
-7) Open index.html
+7) Open index.html in the front-end directory
