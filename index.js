@@ -247,4 +247,41 @@ $( document ).ready(function() {
       });
   }
   generateCloud(wordCloudParams);
-})
+     
+});
+
+ // Select the node that will be observed for mutations
+ const targetNode = document.getElementById('vis');
+
+ // Options for the observer (which mutations to observe)
+ const config = { attributes: false, childList: true, subtree: false };
+
+ // Callback function to execute when mutations are observed
+ const callback = function(mutationsList, observer) {
+     // Use traditional 'for loops' for IE 11
+     for(const mutation of mutationsList) {
+         if (mutation.type === 'childList') {
+             $('svg').click((evt) => makeDraggable(evt));
+             $('svg g g g').dblclick(function(event){
+               event.preventDefault();
+               event.stopPropagation();
+              $('textarea').highlightWithinTextarea({
+                highlight: event.target.textContent
+              });
+              $('.hwt-container').css("width", "100%");
+             });
+         }
+     }
+ };
+
+ // Create an observer instance linked to the callback function
+ const observer = new MutationObserver(callback);
+
+ // Start observing the target node for configured mutations
+ observer.observe(targetNode, config);
+
+ // Later, you can stop observing
+// observer.disconnect();
+
+
+
