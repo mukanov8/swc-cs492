@@ -1,67 +1,67 @@
-  function makeDraggable(evt) {
-    let svg = evt.target;
-    let selectedElement = false;
-    let selectedElementText = false;
-    if (svg.tagName == "path"){
-      return;
+function makeDraggable(evt) {
+  let svg = evt.target;
+  let selectedElement = false;
+  let selectedElementText = false;
+  if (svg.tagName == "path"){
+    return;
+  }
+  let flag = false;
+
+  evt.preventDefault();
+  svg.addEventListener('mousedown', startDrag);
+  svg.addEventListener('mousemove', drag);
+  svg.addEventListener('mouseup', endDrag);
+  svg.addEventListener('mouseleave', endDrag);
+
+
+  function getMousePosition(evt) {
+    let CTM = svg.getScreenCTM();
+    return {
+      x: (evt.clientX - CTM.e) / CTM.a,
+      y: (evt.clientY - CTM.f) / CTM.d
+    };
+  }
+  function startDrag(evt) {
+    flag = true;
+    selectedElement = evt.target;
+    let text_nodes = $(selectedElement).parent().next().children();
+    for (let i = 0; i < text_nodes.length; i++){
+      if (text_nodes[i].textContent === selectedElement.textContent){
+        selectedElementText = text_nodes[i];
+      }
     }
-    let flag = false;
 
-    evt.preventDefault();
-    svg.addEventListener('mousedown', startDrag);
-    svg.addEventListener('mousemove', drag);
-    svg.addEventListener('mouseup', endDrag);
-    svg.addEventListener('mouseleave', endDrag);
-
-
-    function getMousePosition(evt) {
-      let CTM = svg.getScreenCTM();
-      return {
-        x: (evt.clientX - CTM.e) / CTM.a,
-        y: (evt.clientY - CTM.f) / CTM.d
-      };
+    let transforms = selectedElement.transform.baseVal;
+    let transforms_text = selectedElementText.transform.baseVal;
+    console.log(transforms, transforms_text, selectedElementText);
+    offset = getMousePosition(evt);
+    // Ensure the first transform is a translate transform
+    if ((transforms.length === 0 ||
+      transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) || (transforms_text.length === 0 ||
+      transforms_text.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE)) {
+    // Create an transform that translates by (0, 0)
+      var translate = svg.createSVGTransform();
+      var translate_text = svg.createSVGTransform();
+      translate.setTranslate(0, 0);
+      translate_text.setTranslate(0, 0);
+    // Add the translation to the front of the transforms list
+      selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+      selectedElementText.transform.baseVal.insertItemBefore(translate_text, 0);
     }
-    function startDrag(evt) {
-      flag = true;
-      selectedElement = evt.target;
-      let text_nodes = $(selectedElement).parent().next().children();
-      for (let i = 0; i < text_nodes.length; i++){
-        if (text_nodes[i].textContent === selectedElement.textContent){
-          selectedElementText = text_nodes[i];
-        }
-      }
+    // Get initial translation amount
+    transform = transforms.getItem(0);
+    transform_text = transforms_text.getItem(0);
+    offset.x -= transform.matrix.e;
+    offset.y -= transform.matrix.f;
+    offset.x -= transform_text.matrix.e;
+    offset.y -= transform_text.matrix.f;
 
-      let transforms = selectedElement.transform.baseVal;
-      let transforms_text = selectedElementText.transform.baseVal;
-      console.log(transforms, transforms_text, selectedElementText);
-      offset = getMousePosition(evt);
-      // Ensure the first transform is a translate transform
-      if ((transforms.length === 0 ||
-        transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) || (transforms_text.length === 0 ||
-        transforms_text.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE)) {
-      // Create an transform that translates by (0, 0)
-        var translate = svg.createSVGTransform();
-        var translate_text = svg.createSVGTransform();
-        translate.setTranslate(0, 0);
-        translate_text.setTranslate(0, 0);
-      // Add the translation to the front of the transforms list
-        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
-        selectedElementText.transform.baseVal.insertItemBefore(translate_text, 0);
-      }
-      // Get initial translation amount
-      transform = transforms.getItem(0);
-      transform_text = transforms_text.getItem(0);
-      offset.x -= transform.matrix.e;
-      offset.y -= transform.matrix.f;
-      offset.x -= transform_text.matrix.e;
-      offset.y -= transform_text.matrix.f;
-
-      //Change wordcloud order in DOM
-      var children = $('svg').children().children();
-      // console.log(children.map((child) => {return child.id;}))
-      if ($(selectedElement).parent().parent().parent() !== children[children.length-2]){
-        $(selectedElement).parent().parent().parent().insertAfter(children[children.length-2]);
-      }
+    //Change wordcloud order in DOM
+    var children = $('svg').children().children();
+    // console.log(children.map((child) => {return child.id;}))
+    if ($(selectedElement).parent().parent().parent() !== children[children.length-2]){
+      $(selectedElement).parent().parent().parent().insertAfter(children[children.length-2]);
+    }
      // console.log(children.map((child) => {return child.id;}));
 
 
@@ -207,8 +207,19 @@ $( document ).ready(function() {
       // create tag cloud
       let stage = acgraph.create('vis');
       let charts = [];
-      let colors = [anychart.scales.ordinal(), anychart.scales.linearColor()]
+      let color = anychart.scales.ordinal();
       let modes = ['rect', 'circular']
+      let randColors = Array.from(' '.repeat(wordCloudParams.clusterNum));
+
+      if (wordCloudParams.wordColorIndex==0){
+        let colorPalette = anychart.palettes.defaultPalette.concat(anychart.palettes.morning);
+        colorPalette = colorPalette.concat(anychart.palettes.coffee);
+        colorPalette = colorPalette.concat(anychart.palettes.glamour);
+        randColors = randColors.map(e=> colorPalette[getRandomInt(0, colorPalette.length )])
+      }
+      else if (wordCloudParams.wordColorIndex==2){
+        color = anychart.scales.linearColor()
+      }
 
       for (let i = 0; i < wordCloudParams.clusterNum; i ++){
         charts.push(anychart.tagCloud(text2));
@@ -228,10 +239,11 @@ $( document ).ready(function() {
           .textSpacing(wordCloudParams.textSpacing)
           .bounds(boundVals)
           // set color scale
-          .colorScale(colors[wordCloudParams.wordColorIndex])
+          .colorScale(color)
           // set settings for normal state
           .normal({
             fontFamily:  wordCloudParams.font,
+            fill: (wordCloudParams.wordColorIndex==0)? randColors[j]: charts[j].normal().fill()
           })
           // set settings for hovered state
           .hovered({
@@ -289,6 +301,3 @@ $( document ).ready(function() {
 
  // Later, you can stop observing
 // observer.disconnect();
-
-
-
