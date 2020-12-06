@@ -1,7 +1,7 @@
 # swc-cs492
 Semantic Word Clouds
 
-**Link to our project:**
+**Link to our project:** http://swc-flask-aws-environement.eba-hzdjd3su.ap-northeast-2.elasticbeanstalk.com/
 
 ## What's this project about?
 You’re in the right place if you want to make better word clouds. The science shows that great word clouds are split into groups of similar words, with space in between and unique colors. Making those groups by yourself can be a pain, so we give you a headstart. Computers are super-quick at this kind of thing but far from perfect, so simply drag and drop words between clusters until you’re satisfied. 
