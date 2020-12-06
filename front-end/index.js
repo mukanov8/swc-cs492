@@ -208,6 +208,13 @@ $( document ).ready(function() {
     
     //main function for generating the word cloud
     const generateCloud = (wordCloudParams) => {
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      }
+
       anychart.onDocumentReady(function () {
 
       if (wordCloudParams.placeholderFlag) text2 = wordCloudParams.placeholderText;
@@ -216,8 +223,21 @@ $( document ).ready(function() {
       // create tag cloud
       let stage = acgraph.create('vis');
       let charts = [];
-      let colors = [anychart.scales.ordinal(), anychart.scales.linearColor()]
-      let modes = ['rect', 'circular']
+      let color = anychart.scales.ordinal();
+      let modes = ['rect', 'circular'];
+
+      let randColors = Array.from(' '.repeat(wordCloudParams.clusterNum));
+
+      if (wordCloudParams.wordColorIndex==0){
+      let colorPalette = anychart.palettes.defaultPalette.concat(anychart.palettes.morning);
+      colorPalette = colorPalette.concat(anychart.palettes.coffee);
+      colorPalette = colorPalette.concat(anychart.palettes.glamour);
+      randColors = randColors.map(e=> colorPalette[getRandomInt(0, colorPalette.length )])
+      }
+      else if (wordCloudParams.wordColorIndex==2){
+        color = anychart.scales.linearColor()
+      }
+
 
       for (let i = 0; i < wordCloudParams.clusterNum; i ++){
         charts.push(anychart.tagCloud(text2));
@@ -237,10 +257,12 @@ $( document ).ready(function() {
           .textSpacing(wordCloudParams.textSpacing)
           .bounds(boundVals)
           // set color scale
-          .colorScale(colors[wordCloudParams.wordColorIndex])
+          // .colorScale(colors[wordCloudParams.wordColorIndex])
+          .colorScale(color)
           // set settings for normal state
           .normal({
             fontFamily:  wordCloudParams.font,
+            fill: (wordCloudParams.wordColorIndex==0)? randColors[j]: charts[j].normal().fill()
           })
           // set settings for hovered state
           .hovered({
