@@ -229,15 +229,19 @@ $( document ).ready(function() {
       let randColors = Array.from(' '.repeat(wordCloudParams.clusterNum));
 
       if (wordCloudParams.wordColorIndex==0){
-      let colorPalette = anychart.palettes.defaultPalette.concat(anychart.palettes.morning);
-      colorPalette = colorPalette.concat(anychart.palettes.coffee);
-      colorPalette = colorPalette.concat(anychart.palettes.glamour);
-      randColors = randColors.map(e=> colorPalette[getRandomInt(0, colorPalette.length )])
+      // let colorPalette = anychart.palettes.defaultPalette.concat(anychart.palettes.provence);
+      // colorPalette = colorPalette.concat(anychart.palettes.wines);
+      // colorPalette = colorPalette.concat(anychart.palettes.pastel);
+        let colorPalette = ["#64b5f6", "#1976d2", "#ef6c00", "#ffd54f", "#455a64", "#96a6a6", "#dd2c00", "#00838f", "#00bfa5", "#ffa000", "#a53db1", "#faabc9", "#cade58"]
+        for (let i=0; i< randColors.length;i++){
+          let randInt = getRandomInt(0, colorPalette.length )
+          randColors[i] = colorPalette[randInt]
+          colorPalette.splice(randInt,1)
+        }
       }
       else if (wordCloudParams.wordColorIndex==2){
         color = anychart.scales.linearColor()
       }
-
 
       for (let i = 0; i < wordCloudParams.clusterNum; i ++){
         charts.push(anychart.tagCloud(text2));
