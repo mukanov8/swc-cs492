@@ -33,7 +33,7 @@
 
       let transforms = selectedElement.transform.baseVal;
       let transforms_text = selectedElementText.transform.baseVal;
-      console.log(transforms, transforms_text, selectedElementText);
+     // console.log(transforms, transforms_text, selectedElementText);
       offset = getMousePosition(evt);
       // Ensure the first transform is a translate transform
       if ((transforms.length === 0 ||
@@ -80,8 +80,8 @@
      // selectedElementText.parent().removeChild(selectedElementText);
      if (flag === true){
       var fc = $(selectedElement).parent().parent().attr('transform').toString();
-      console.log(fc.split("matrix"));
-      console.log(getMousePosition(evt));
+      // console.log(fc.split("matrix"));
+      // console.log(getMousePosition(evt));
       flag = false;
    }
       selectedElement = null;
@@ -284,8 +284,9 @@ $( document ).ready(function() {
           charts[j].container(stage);
           // initiate chart drawing
           charts[j].draw();
+          $('svg').attr('onload', 'makeDraggable(evt)');
         }
-        document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
+        //document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
       });
   }
   generateCloud(wordCloudParams);
@@ -307,6 +308,7 @@ $( document ).ready(function() {
              $('svg g g g').dblclick(function(event){
                event.preventDefault();
                event.stopPropagation();
+               console.log(event.target);
               $('textarea').highlightWithinTextarea({
                 highlight: event.target.textContent
               });

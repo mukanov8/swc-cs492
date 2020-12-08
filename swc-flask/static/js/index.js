@@ -273,8 +273,9 @@ $( document ).ready(function() {
           charts[j].container(stage);
           // initiate chart drawing
           charts[j].draw();
+          $('svg').attr('onload', 'makeDraggable(evt)');
         }
-        document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
+       // document.querySelector('svg').addEventListener('click', (evt) => makeDraggable(evt));  
       });
   }
   generateCloud(wordCloudParams);
