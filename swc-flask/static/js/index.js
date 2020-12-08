@@ -33,7 +33,7 @@ function makeDraggable(evt) {
 
     let transforms = selectedElement.transform.baseVal;
     let transforms_text = selectedElementText.transform.baseVal;
-    console.log(transforms, transforms_text, selectedElementText);
+    // console.log(transforms, transforms_text, selectedElementText);
     offset = getMousePosition(evt);
     // Ensure the first transform is a translate transform
     if ((transforms.length === 0 ||
@@ -80,8 +80,8 @@ function makeDraggable(evt) {
      // selectedElementText.parent().removeChild(selectedElementText);
      if (flag === true){
       var fc = $(selectedElement).parent().parent().attr('transform').toString();
-      console.log(fc.split("matrix"));
-      console.log(getMousePosition(evt));
+      // console.log(fc.split("matrix"));
+      // console.log(getMousePosition(evt));
       flag = false;
    }
       selectedElement = null;
